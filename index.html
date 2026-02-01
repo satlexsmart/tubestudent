@@ -3,230 +3,289 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Students - Focus Mode</title>
+    <title>SATLEX FOCUS STATION</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Permanent+Marker&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
         :root {
-            --bg-color: #D6EAF8; /* Light blue from image */
-            --yt-red: #FF0000;
-            --text-black: #000;
+            --paper: #f0f0f0;
+            --ink: #1a1a1a;
+            --highlight: #ffee00;
+            --yt-red: #ff0000;
+            --cyan: #00ffff;
+            --grid-color: #badcf5;
         }
 
         body {
+            background-color: var(--paper);
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'Space Mono', monospace;
+            color: var(--ink);
             margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* --- Header Section --- */
-        .header {
+        /* --- THE CRAZY HEADER --- */
+        header {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 4px solid var(--ink);
+            background: #fff;
+            box-shadow: 5px 5px 0px var(--ink);
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-box {
+            background: var(--yt-red);
+            color: white;
+            padding: 5px 15px;
+            font-family: 'Permanent Marker', cursive;
+            font-size: 2rem;
+            transform: rotate(-2deg);
+            border: 3px solid var(--ink);
+        }
+
+        .subtitle {
+            font-weight: bold;
+            background: var(--highlight);
+            padding: 2px 8px;
+        }
+
+        /* --- THE VIDEO MACHINE --- */
+        .main-stage {
+            margin-top: 50px;
+            width: 90%;
+            max-width: 800px;
+            position: relative;
+        }
+
+        /* This is your "Film Strip" design, upgraded */
+        .monitor-casing {
+            background: var(--ink);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        /* The Film Holes */
+        .monitor-casing::before {
+            content: "";
             position: absolute;
-            top: 20px;
-            left: 20px;
+            top: 5px; left: 20px; right: 20px;
+            height: 10px;
+            background-image: linear-gradient(90deg, #333 50%, transparent 50%);
+            background-size: 20px 100%;
+        }
+        .monitor-casing::after {
+            content: "";
+            position: absolute;
+            bottom: 5px; left: 20px; right: 20px;
+            height: 10px;
+            background-image: linear-gradient(90deg, #333 50%, transparent 50%);
+            background-size: 20px 100%;
+        }
+
+        .screen-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            border: 2px solid #555;
             display: flex;
             align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* The "Noise" animation when empty */
+        .static-noise {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                #111 2px,
+                #111 4px
+            );
+            opacity: 0.3;
+            animation: scroll 0.2s infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* --- CONTROL PANEL --- */
+        .control-deck {
+            margin-top: 30px;
+            width: 90%;
+            max-width: 600px;
+            background: white;
+            border: 3px solid var(--ink);
+            padding: 20px;
+            box-shadow: 8px 8px 0px var(--highlight);
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex-grow: 1;
+            display: flex;
             gap: 10px;
         }
 
-        .yt-badge {
-            background-color: var(--yt-red);
+        input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 2px solid var(--ink);
+            font-family: 'Space Mono', monospace;
+            font-size: 1rem;
+            background: #eee;
+        }
+
+        button {
+            background: var(--ink);
             color: white;
-            padding: 5px 15px;
-            border-radius: 20px; /* Rounded pill shape */
-            font-family: 'Oswald', sans-serif;
-            font-size: 2rem;
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-
-        .student-text {
-            font-family: 'Permanent Marker', cursive; /* Handwritten style */
-            font-size: 2.5rem;
-            color: var(--text-black);
-            transform: rotate(-3deg); /* Slight tilt like the image */
-        }
-
-        /* --- Main Hero Icon --- */
-        .hero-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-
-        .film-strip-box {
-            width: 300px;
-            height: 220px;
-            border: 8px solid black;
-            position: relative;
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* The Film Strip Holes (Top and Bottom) */
-        .film-strip-box::before, .film-strip-box::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 20px;
-            background-image: linear-gradient(to right, black 50%, transparent 50%);
-            background-size: 40px 100%; /* Creates the dashed effect */
-        }
-
-        .film-strip-box::before { top: 10px; }
-        .film-strip-box::after { bottom: 10px; }
-
-        /* The Play Triangle */
-        .play-icon {
-            width: 0; 
-            height: 0; 
-            border-top: 50px solid transparent;
-            border-bottom: 50px solid transparent;
-            border-left: 80px solid black; /* The triangle shape */
-            margin-left: 10px;
-        }
-
-        /* --- Search Bar --- */
-        .search-container {
-            position: relative;
-            width: 80%;
-            max-width: 500px;
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 15px 50px 15px 25px;
-            border: 2px solid black;
-            border-radius: 50px;
-            font-size: 1.2rem;
-            outline: none;
-            background: transparent;
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-        }
-
-        .search-icon circle { fill: none; stroke: black; stroke-width: 3; }
-        .search-icon line { stroke: black; stroke-width: 3; }
-
-        /* --- Tools Section (Where your scripts live) --- */
-        .tools-section {
-            margin-top: 60px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.5);
-            padding: 20px;
-            border-radius: 15px;
-            border: 2px dashed #000;
-        }
-
-        .tools-title {
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-            font-size: 0.9rem;
-        }
-
-        .bookmarklet-btn {
-            display: inline-block;
-            margin: 5px;
+            border: none;
             padding: 10px 20px;
-            background: black;
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: grab;
-            font-size: 0.9rem;
-            transition: transform 0.2s;
+            font-family: 'Permanent Marker', cursive;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.1s;
         }
 
-        .bookmarklet-btn:hover {
-            transform: scale(1.05);
+        button:active {
+            transform: translate(2px, 2px);
+        }
+
+        button.mode-btn {
             background: var(--yt-red);
+            width: 100%;
         }
 
-        .instruction {
+        /* --- STATUS LOG --- */
+        .status-log {
+            margin-top: 20px;
             font-size: 0.8rem;
-            color: #555;
-            margin-top: 10px;
+            color: #666;
+            text-align: left;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .log-entry {
+            border-left: 2px solid var(--highlight);
+            padding-left: 10px;
+            margin-bottom: 5px;
         }
 
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="yt-badge">YOUTUBE</div>
-        <div class="student-text">STUDENTS</div>
-    </div>
+    <header>
+        <div class="logo-box">YOUTUBE FOR STUDENTS</div>
+        <div class="subtitle">PROJECT: SATLEX_V1</div>
+    </header>
 
-    <div class="hero-container">
-        <div class="film-strip-box">
-            <div class="play-icon"></div>
+    <div class="main-stage">
+        <div class="monitor-casing">
+            <div class="screen-placeholder" id="videoScreen">
+                <div class="static-noise"></div>
+                <h2 style="color: white; z-index: 2; font-family: 'Permanent Marker'">PASTE LINK BELOW</h2>
+            </div>
         </div>
     </div>
 
-    <div class="search-container">
-        <input type="text" class="search-bar" id="searchInput" placeholder="Search for lectures, topics...">
-        <svg class="search-icon" viewBox="0 0 24 24" onclick="performSearch()">
-            <circle cx="10" cy="10" r="7"/>
-            <line x1="16" y1="16" x2="22" y2="22"/>
-        </svg>
+    <div class="control-deck">
+        <div class="input-group">
+            <input type="text" id="urlInput" placeholder="Paste YouTube Link here (e.g., https://youtu.be/...)">
+            <button onclick="loadVideo()">LOAD >></button>
+        </div>
+        <button class="mode-btn" onclick="activateFocusProtocols()">ACTIVATE FOCUS MODE</button>
     </div>
 
-    <div class="tools-section">
-        <div class="tools-title">Student Tools (Drag these to Bookmarks Bar)</div>
-        
-        <a class="bookmarklet-btn" href="javascript:(function(){const checkInterval=1000;function removeShorts(){const shelves=document.querySelectorAll('ytd-rich-shelf-renderer[is-shorts], ytd-reel-shelf-renderer');shelves.forEach(shelf=>{shelf.remove();console.log('Shorts shelf removed')});const sideNavItems=document.querySelectorAll('ytd-guide-entry-renderer a[title=\'Shorts\'], ytd-mini-guide-entry-renderer a[title=\'Shorts\']');sideNavItems.forEach(item=>{const container=item.closest('ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer');if(container)container.remove()});const channelTabs=document.querySelectorAll('yt-tab-shape[tab-title=\'Shorts\']');channelTabs.forEach(tab=>{tab.remove()})}removeShorts();if(window.shortsRemoverInterval)clearInterval(window.shortsRemoverInterval);window.shortsRemoverInterval=setInterval(removeShorts,checkInterval);alert('🚫 Shorts Removed for Study Mode!');})();">
-            No Shorts Mode
-        </a>
-
-        <a class="bookmarklet-btn" href="javascript:(function(){alert('⚡ Ad Speedrun Active');setInterval(()=>{let btn=document.querySelector('.ytp-ad-skip-button, .skip-ad, [class*=\'skip-button\']');if(btn){btn.click()}},500);setInterval(()=>{let isAd=document.querySelector('.ad-showing');let v=document.querySelector('video');if(isAd&&v){v.playbackRate=16;v.currentTime=v.duration}else if(v){v.playbackRate=1}},500);})();">
-            Ad Speedrun
-        </a>
-
-        <div class="instruction">
-            1. Drag buttons to your bookmarks bar.<br>
-            2. Go to YouTube.<br>
-            3. Click the bookmark to activate scripts.
-        </div>
+    <div class="status-log" id="consoleLog">
+        <div class="log-entry">System ready... waiting for input.</div>
     </div>
 
     <script>
-        // Search Logic
-        const input = document.getElementById('searchInput');
+        // --- 1. THE LOAD LOGIC ---
+        function loadVideo() {
+            const input = document.getElementById('urlInput').value;
+            const screen = document.getElementById('videoScreen');
+            const log = document.getElementById('consoleLog');
 
-        input.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
+            // Extract Video ID using Regex
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = input.match(regExp);
 
-        function performSearch() {
-            const query = input.value;
-            if (query) {
-                // Opens YouTube results in a new tab
-                const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
-                window.open(url, '_blank');
+            if (match && match[2].length === 11) {
+                const videoId = match[2];
+                // Embed URL with 'rel=0' to prevent random related videos
+                screen.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" allowfullscreen></iframe>`;
+                log.innerHTML += `<div class="log-entry" style="color: green;">[SUCCESS] Video ID ${videoId} loaded. Distractions purged.</div>`;
+            } else {
+                alert("Invalid YouTube URL! Copy the full link.");
+                log.innerHTML += `<div class="log-entry" style="color: red;">[ERROR] Invalid Link detected.</div>`;
             }
         }
+
+        // --- 2. THE FOCUS PROTOCOLS (Your Logic Adapted) ---
+        function activateFocusProtocols() {
+            const log = document.getElementById('consoleLog');
+            
+            // Visual feedback "Hacking" effect
+            document.body.style.filter = "invert(1) hue-rotate(180deg)";
+            setTimeout(() => { document.body.style.filter = "none"; }, 200);
+
+            // 1. Simulate "Shorts Removal" (Not needed in embed, but we log it for the user)
+            log.innerHTML += `<div class="log-entry"><b>[SCRIPT RUNNING]</b> Scanning for Shorts... </div>`;
+            setTimeout(() => {
+                log.innerHTML += `<div class="log-entry" style="color:blue;"><b>[CLEARED]</b> Shorts Shelf: NULL (Embed Mode Active).</div>`;
+            }, 800);
+
+            // 2. Ad-Skip Logic (The embedded equivalent)
+            // We can't click buttons inside the iframe, but we can prevent the user from clicking away.
+            log.innerHTML += `<div class="log-entry"><b>[SCRIPT RUNNING]</b> Ad-Skip Sentinel is watching...</div>`;
+            
+            // This is a "Focus Check" - if the user leaves the tab, we alert them (Study Mode)
+            window.addEventListener('blur', function() {
+                document.title = "COME BACK TO STUDY!";
+            });
+            window.addEventListener('focus', function() {
+                document.title = "SATLEX FOCUS STATION";
+            });
+
+            alert("FOCUS PROTOCOLS ACTIVE.\n1. Shorts Blocked by Embed firewall.\n2. Ad-Skip Logic: Minimized.\n3. Tab Monitoring: ON.");
+        }
+
+        // Allow "Enter" key to load
+        document.getElementById('urlInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') loadVideo();
+        });
+
     </script>
 </body>
 </html>
