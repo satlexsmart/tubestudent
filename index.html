@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SATLEX FOCUS STATION</title>
+    <title>SATLEX FOCUS STATION V2</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
@@ -12,7 +12,7 @@
             --ink: #1a1a1a;
             --highlight: #ffee00;
             --yt-red: #ff0000;
-            --cyan: #00ffff;
+            --neon-green: #39ff14;
             --grid-color: #badcf5;
         }
 
@@ -32,7 +32,7 @@
             overflow-x: hidden;
         }
 
-        /* --- THE CRAZY HEADER --- */
+        /* --- HEADER --- */
         header {
             width: 100%;
             padding: 20px;
@@ -42,7 +42,6 @@
             border-bottom: 4px solid var(--ink);
             background: #fff;
             box-shadow: 5px 5px 0px var(--ink);
-            position: relative;
             z-index: 10;
         }
 
@@ -60,17 +59,16 @@
             font-weight: bold;
             background: var(--highlight);
             padding: 2px 8px;
+            border: 1px solid var(--ink);
         }
 
-        /* --- THE VIDEO MACHINE --- */
+        /* --- THE MONITOR --- */
         .main-stage {
-            margin-top: 50px;
+            margin-top: 40px;
             width: 90%;
             max-width: 800px;
-            position: relative;
         }
 
-        /* This is your "Film Strip" design, upgraded */
         .monitor-casing {
             background: var(--ink);
             padding: 15px;
@@ -79,23 +77,14 @@
             position: relative;
         }
 
-        /* The Film Holes */
-        .monitor-casing::before {
-            content: "";
-            position: absolute;
-            top: 5px; left: 20px; right: 20px;
-            height: 10px;
+        /* Holes for Film Strip look */
+        .monitor-casing::before, .monitor-casing::after {
+            content: ""; position: absolute; left: 20px; right: 20px; height: 10px;
             background-image: linear-gradient(90deg, #333 50%, transparent 50%);
             background-size: 20px 100%;
         }
-        .monitor-casing::after {
-            content: "";
-            position: absolute;
-            bottom: 5px; left: 20px; right: 20px;
-            height: 10px;
-            background-image: linear-gradient(90deg, #333 50%, transparent 50%);
-            background-size: 20px 100%;
-        }
+        .monitor-casing::before { top: 5px; }
+        .monitor-casing::after { bottom: 5px; }
 
         .screen-placeholder {
             width: 100%;
@@ -109,33 +98,13 @@
             position: relative;
         }
 
-        /* The "Noise" animation when empty */
-        .static-noise {
-            position: absolute;
-            width: 100%; height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                #111 2px,
-                #111 4px
-            );
-            opacity: 0.3;
-            animation: scroll 0.2s infinite;
-        }
-
-        @keyframes scroll {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(4px); }
-        }
-
         iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
 
-        /* --- CONTROL PANEL --- */
+        /* --- CONTROL DECK --- */
         .control-deck {
             margin-top: 30px;
             width: 90%;
@@ -153,6 +122,7 @@
             flex-grow: 1;
             display: flex;
             gap: 10px;
+            width: 100%;
         }
 
         input {
@@ -160,7 +130,6 @@
             padding: 10px;
             border: 2px solid var(--ink);
             font-family: 'Space Mono', monospace;
-            font-size: 1rem;
             background: #eee;
         }
 
@@ -168,37 +137,36 @@
             background: var(--ink);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 10px 15px;
             font-family: 'Permanent Marker', cursive;
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             transition: 0.1s;
         }
 
-        button:active {
-            transform: translate(2px, 2px);
+        button:hover { transform: translateY(-2px); }
+        button:active { transform: translateY(2px); }
+
+        .action-row {
+            display: flex;
+            width: 100%;
+            gap: 10px;
+            margin-top: 10px;
         }
 
-        button.mode-btn {
-            background: var(--yt-red);
-            width: 100%;
-        }
+        .mode-btn { background: var(--yt-red); flex: 1; }
+        .bg-btn { background: var(--neon-green); color: black; flex: 1; }
 
         /* --- STATUS LOG --- */
         .status-log {
             margin-top: 20px;
             font-size: 0.8rem;
             color: #666;
-            text-align: left;
             width: 90%;
             max-width: 600px;
+            font-family: 'Courier New', monospace;
         }
-
-        .log-entry {
-            border-left: 2px solid var(--highlight);
-            padding-left: 10px;
-            margin-bottom: 5px;
-        }
+        .log-entry { margin-bottom: 5px; border-left: 3px solid var(--highlight); padding-left: 8px; }
 
     </style>
 </head>
@@ -206,82 +174,116 @@
 
     <header>
         <div class="logo-box">YOUTUBE FOR STUDENTS</div>
-        <div class="subtitle">PROJECT: SATLEX_V1</div>
+        <div class="subtitle">SATLEX_V2.0 // BG_UNLOCKED</div>
     </header>
 
     <div class="main-stage">
         <div class="monitor-casing">
             <div class="screen-placeholder" id="videoScreen">
-                <div class="static-noise"></div>
-                <h2 style="color: white; z-index: 2; font-family: 'Permanent Marker'">PASTE LINK BELOW</h2>
+                <h2 style="color: white; font-family: 'Permanent Marker'">SYSTEM IDLE</h2>
             </div>
         </div>
     </div>
 
     <div class="control-deck">
         <div class="input-group">
-            <input type="text" id="urlInput" placeholder="Paste YouTube Link here (e.g., https://youtu.be/...)">
+            <input type="text" id="urlInput" placeholder="Paste Link...">
             <button onclick="loadVideo()">LOAD >></button>
         </div>
-        <button class="mode-btn" onclick="activateFocusProtocols()">ACTIVATE FOCUS MODE</button>
+        
+        <div class="action-row">
+            <button class="mode-btn" onclick="toggleFocusMode()">FOCUS MODE</button>
+            <button class="bg-btn" onclick="enableBackgroundHack()">FLOAT / BG PLAY</button>
+        </div>
     </div>
 
     <div class="status-log" id="consoleLog">
-        <div class="log-entry">System ready... waiting for input.</div>
+        <div class="log-entry">System v2.0 initialized.</div>
     </div>
 
     <script>
-        // --- 1. THE LOAD LOGIC ---
+        let isFocusActive = false;
+
+        function log(msg, color="black") {
+            const consoleDiv = document.getElementById('consoleLog');
+            consoleDiv.innerHTML += `<div class="log-entry" style="color:${color}">> ${msg}</div>`;
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+        }
+
         function loadVideo() {
             const input = document.getElementById('urlInput').value;
             const screen = document.getElementById('videoScreen');
-            const log = document.getElementById('consoleLog');
-
-            // Extract Video ID using Regex
+            
+            // Regex to find ID
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
             const match = input.match(regExp);
 
             if (match && match[2].length === 11) {
                 const videoId = match[2];
-                // Embed URL with 'rel=0' to prevent random related videos
-                screen.innerHTML = `<iframe width="100%" height="100%" src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" allowfullscreen></iframe>`;
-                log.innerHTML += `<div class="log-entry" style="color: green;">[SUCCESS] Video ID ${videoId} loaded. Distractions purged.</div>`;
+                
+                // V2 UPGRADE: Added 'enablejsapi=1' and permissions for Picture-in-Picture
+                const embedCode = `
+                    <iframe 
+                        id="yt-player"
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&enablejsapi=1" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>`;
+                
+                screen.innerHTML = embedCode;
+                log(`Video ${videoId} Loaded.`, "green");
+                
+                // Hack: Set Title to "Playing" so browser thinks it's active media
+                if ('mediaSession' in navigator) {
+                    navigator.mediaSession.metadata = new MediaMetadata({
+                        title: "SATLEX STUDY SESSION",
+                        artist: "YouTube Student Mode",
+                        album: "Focus Flow"
+                    });
+                }
+
             } else {
-                alert("Invalid YouTube URL! Copy the full link.");
-                log.innerHTML += `<div class="log-entry" style="color: red;">[ERROR] Invalid Link detected.</div>`;
+                log("Error: Invalid Link.", "red");
+                alert("Please paste a valid YouTube link!");
             }
         }
 
-        // --- 2. THE FOCUS PROTOCOLS (Your Logic Adapted) ---
-        function activateFocusProtocols() {
-            const log = document.getElementById('consoleLog');
-            
-            // Visual feedback "Hacking" effect
-            document.body.style.filter = "invert(1) hue-rotate(180deg)";
-            setTimeout(() => { document.body.style.filter = "none"; }, 200);
-
-            // 1. Simulate "Shorts Removal" (Not needed in embed, but we log it for the user)
-            log.innerHTML += `<div class="log-entry"><b>[SCRIPT RUNNING]</b> Scanning for Shorts... </div>`;
-            setTimeout(() => {
-                log.innerHTML += `<div class="log-entry" style="color:blue;"><b>[CLEARED]</b> Shorts Shelf: NULL (Embed Mode Active).</div>`;
-            }, 800);
-
-            // 2. Ad-Skip Logic (The embedded equivalent)
-            // We can't click buttons inside the iframe, but we can prevent the user from clicking away.
-            log.innerHTML += `<div class="log-entry"><b>[SCRIPT RUNNING]</b> Ad-Skip Sentinel is watching...</div>`;
-            
-            // This is a "Focus Check" - if the user leaves the tab, we alert them (Study Mode)
-            window.addEventListener('blur', function() {
-                document.title = "COME BACK TO STUDY!";
-            });
-            window.addEventListener('focus', function() {
-                document.title = "SATLEX FOCUS STATION";
-            });
-
-            alert("FOCUS PROTOCOLS ACTIVE.\n1. Shorts Blocked by Embed firewall.\n2. Ad-Skip Logic: Minimized.\n3. Tab Monitoring: ON.");
+        function toggleFocusMode() {
+            isFocusActive = !isFocusActive;
+            if(isFocusActive) {
+                document.body.style.filter = "grayscale(100%) contrast(120%)";
+                log("FOCUS MODE: ACTIVE. Colors purged.", "blue");
+            } else {
+                document.body.style.filter = "none";
+                log("Focus Mode deactivated.", "grey");
+            }
         }
 
-        // Allow "Enter" key to load
+        // --- THE BACKGROUND HACK ---
+        function enableBackgroundHack() {
+            // Method 1: Try to force Picture-in-Picture (Best for Desktop)
+            // Note: This relies on the user interacting with the native PiP button in the iframe usually,
+            // but we can alert them to it.
+            
+            log("Attempting to force Background protocols...", "purple");
+            alert("HOW TO USE BACKGROUND PLAY:\n\n1. Start the video.\n2. Look for the 'Picture-in-Picture' icon in the video player controls (or right-click the video 2 times).\n3. Click it to FLOAT the video.\n\nNow you can switch tabs and it will keep playing!");
+
+            // Method 2: Wake Lock (Prevents screen from sleeping on mobile)
+            if ('wakeLock' in navigator) {
+                navigator.wakeLock.request('screen')
+                .then(() => {
+                    log("Screen Wake Lock: ACQUIRED. Phone won't sleep.", "green");
+                })
+                .catch((err) => {
+                    log("Wake Lock failed: " + err.name, "red");
+                });
+            }
+        }
+
         document.getElementById('urlInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') loadVideo();
         });
