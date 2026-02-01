@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Students - Focus Mode</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Permanent+Marker&display=swap');
+
+        :root {
+            --bg-color: #D6EAF8; /* Light blue from image */
+            --yt-red: #FF0000;
+            --text-black: #000;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* --- Header Section --- */
+        .header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .yt-badge {
+            background-color: var(--yt-red);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px; /* Rounded pill shape */
+            font-family: 'Oswald', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        .student-text {
+            font-family: 'Permanent Marker', cursive; /* Handwritten style */
+            font-size: 2.5rem;
+            color: var(--text-black);
+            transform: rotate(-3deg); /* Slight tilt like the image */
+        }
+
+        /* --- Main Hero Icon --- */
+        .hero-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .film-strip-box {
+            width: 300px;
+            height: 220px;
+            border: 8px solid black;
+            position: relative;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* The Film Strip Holes (Top and Bottom) */
+        .film-strip-box::before, .film-strip-box::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background-image: linear-gradient(to right, black 50%, transparent 50%);
+            background-size: 40px 100%; /* Creates the dashed effect */
+        }
+
+        .film-strip-box::before { top: 10px; }
+        .film-strip-box::after { bottom: 10px; }
+
+        /* The Play Triangle */
+        .play-icon {
+            width: 0; 
+            height: 0; 
+            border-top: 50px solid transparent;
+            border-bottom: 50px solid transparent;
+            border-left: 80px solid black; /* The triangle shape */
+            margin-left: 10px;
+        }
+
+        /* --- Search Bar --- */
+        .search-container {
+            position: relative;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px 50px 15px 25px;
+            border: 2px solid black;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            outline: none;
+            background: transparent;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+
+        .search-icon circle { fill: none; stroke: black; stroke-width: 3; }
+        .search-icon line { stroke: black; stroke-width: 3; }
+
+        /* --- Tools Section (Where your scripts live) --- */
+        .tools-section {
+            margin-top: 60px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px dashed #000;
+        }
+
+        .tools-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .bookmarklet-btn {
+            display: inline-block;
+            margin: 5px;
+            padding: 10px 20px;
+            background: black;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: grab;
+            font-size: 0.9rem;
+            transition: transform 0.2s;
+        }
+
+        .bookmarklet-btn:hover {
+            transform: scale(1.05);
+            background: var(--yt-red);
+        }
+
+        .instruction {
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="yt-badge">YOUTUBE</div>
+        <div class="student-text">STUDENTS</div>
+    </div>
+
+    <div class="hero-container">
+        <div class="film-strip-box">
+            <div class="play-icon"></div>
+        </div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" class="search-bar" id="searchInput" placeholder="Search for lectures, topics...">
+        <svg class="search-icon" viewBox="0 0 24 24" onclick="performSearch()">
+            <circle cx="10" cy="10" r="7"/>
+            <line x1="16" y1="16" x2="22" y2="22"/>
+        </svg>
+    </div>
+
+    <div class="tools-section">
+        <div class="tools-title">Student Tools (Drag these to Bookmarks Bar)</div>
+        
+        <a class="bookmarklet-btn" href="javascript:(function(){const checkInterval=1000;function removeShorts(){const shelves=document.querySelectorAll('ytd-rich-shelf-renderer[is-shorts], ytd-reel-shelf-renderer');shelves.forEach(shelf=>{shelf.remove();console.log('Shorts shelf removed')});const sideNavItems=document.querySelectorAll('ytd-guide-entry-renderer a[title=\'Shorts\'], ytd-mini-guide-entry-renderer a[title=\'Shorts\']');sideNavItems.forEach(item=>{const container=item.closest('ytd-guide-entry-renderer, ytd-mini-guide-entry-renderer');if(container)container.remove()});const channelTabs=document.querySelectorAll('yt-tab-shape[tab-title=\'Shorts\']');channelTabs.forEach(tab=>{tab.remove()})}removeShorts();if(window.shortsRemoverInterval)clearInterval(window.shortsRemoverInterval);window.shortsRemoverInterval=setInterval(removeShorts,checkInterval);alert('🚫 Shorts Removed for Study Mode!');})();">
+            No Shorts Mode
+        </a>
+
+        <a class="bookmarklet-btn" href="javascript:(function(){alert('⚡ Ad Speedrun Active');setInterval(()=>{let btn=document.querySelector('.ytp-ad-skip-button, .skip-ad, [class*=\'skip-button\']');if(btn){btn.click()}},500);setInterval(()=>{let isAd=document.querySelector('.ad-showing');let v=document.querySelector('video');if(isAd&&v){v.playbackRate=16;v.currentTime=v.duration}else if(v){v.playbackRate=1}},500);})();">
+            Ad Speedrun
+        </a>
+
+        <div class="instruction">
+            1. Drag buttons to your bookmarks bar.<br>
+            2. Go to YouTube.<br>
+            3. Click the bookmark to activate scripts.
+        </div>
+    </div>
+
+    <script>
+        // Search Logic
+        const input = document.getElementById('searchInput');
+
+        input.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        function performSearch() {
+            const query = input.value;
+            if (query) {
+                // Opens YouTube results in a new tab
+                const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+                window.open(url, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
